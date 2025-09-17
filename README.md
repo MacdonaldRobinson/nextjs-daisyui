@@ -1,1 +1,1 @@
-## Example for Nexjs DaisyUI
+## Example for Nextjs DaisyUI
