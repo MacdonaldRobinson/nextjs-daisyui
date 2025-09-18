@@ -6,28 +6,23 @@ import PageWrapper, {
 import NavBar from "./components/NavBar/NavBar";
 import Hero from "./components/Hero/Hero";
 import Footer from "./components/Footer/Footer";
-import ListPosts from "./components/ListPosts/ListPosts";
-import { getPosts } from "./serverActions/postActions";
-import { TPost } from "./ZodSchemas/PostSchema";
-import { TUser } from "./ZodSchemas/UserSchema";
-import { getUser } from "./serverActions/userActions";
+import ListUsers from "./components/ListUsers/ListUsers";
+import { TModalHandle } from "./components/Modal/Modal";
 
 export default function Home() {
     const pageRef = useRef<TPageWrapperHandle>(null);
+    const [popupModal, setPopupModal] = useState<TModalHandle | null>(null);
 
-    const handleDrawerOpen = () => {
-        if (!pageRef.current) return;
-        pageRef.current.openDrawer();
-    };
+    useEffect(() => {
+        if (!pageRef.current?.popupModal) return;
+
+        setPopupModal(pageRef.current.popupModal);
+    }, [pageRef.current?.popupModal]);
 
     return (
         <PageWrapper ref={pageRef}>
-            <NavBar onMouseMenuClick={handleDrawerOpen} />
             <Hero />
-            <div>
-                <ListPosts />
-            </div>
-            <Footer />
+            <div>{popupModal && <ListUsers popupModal={popupModal} />}</div>
         </PageWrapper>
     );
 }

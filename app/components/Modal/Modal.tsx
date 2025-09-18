@@ -1,31 +1,42 @@
-import React, { useImperativeHandle, useRef } from "react";
+import React, { useImperativeHandle, useRef, useState } from "react";
 
 type TModal = {
-    title: string;
-    children: React.ReactNode;
     ref?: React.Ref<TModalHandle>;
 };
 
 export type TModalHandle = {
-    openModal: () => void;
+    openModal: (
+        titleContent: React.ReactNode,
+        modalContent: React.ReactNode
+    ) => void;
     closeModal: () => void;
 };
 
-const Modal = ({ ref, title, children }: TModal) => {
+const Modal = ({ ref }: TModal) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
+    const [modalTitle, setModalTitle] = useState<React.ReactNode>();
+    const [modalContent, setModalContent] = useState<React.ReactNode>();
 
     useImperativeHandle(ref, () => ({
-        openModal: () => dialogRef.current?.showModal(),
+        openModal: (
+            titleContent: React.ReactNode,
+            modalContent: React.ReactNode
+        ) => {
+            setModalContent(modalContent);
+            setModalTitle(titleContent);
+
+            dialogRef.current?.showModal();
+        },
         closeModal: () => dialogRef.current?.close(),
     }));
 
     return (
         <div>
             {/* Open the modal using document.getElementById('ID').showModal() method */}
-            <dialog ref={dialogRef} id="my_modal_1" className="modal">
-                <div className="modal-box">
-                    <h3 className="font-bold text-lg">{title}</h3>
-                    <p className="py-4">{children}</p>
+            <dialog id="my_modal_4" className="modal" ref={dialogRef}>
+                <div className="modal-box w-11/12 max-w-5xl">
+                    <h3 className="font-bold text-lg">{modalTitle}</h3>
+                    <div className="py-4">{modalContent}</div>
                     <div className="modal-action">
                         <form method="dialog">
                             {/* if there is a button in form, it will close the modal */}

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { MouseEventHandler } from "react";
 
 export type TNavBar = {
@@ -33,7 +34,9 @@ const NavBar = ({ onMouseMenuClick }: TNavBar) => {
                 </button>
             </div>
             <div className="flex-1">
-                <a className="btn btn-ghost text-xl">daisyUI</a>
+                <Link href={"/"} className="btn btn-ghost text-xl">
+                    daisyUI
+                </Link>
             </div>
             <div className="flex-none">
                 <button className="btn btn-square btn-ghost">

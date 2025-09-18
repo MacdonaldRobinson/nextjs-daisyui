@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useImperativeHandle, useRef } from "react";
+import { useImperativeHandle, useRef } from "react";
 import Modal, { TModalHandle } from "../Modal/Modal";
+import NavBar from "../NavBar/NavBar";
+import Footer from "../Footer/Footer";
+import Link from "next/link";
 
 type TPageWrapper = {
     children: React.ReactNode;
@@ -23,20 +26,23 @@ const PageWrapper = ({ children, ref }: TPageWrapper) => {
         () => {
             return {
                 popupModal: popupModal.current,
-                openDrawer: () => {
-                    if (!drawerToggle.current) return;
-
-                    drawerToggle.current.checked = true;
-                },
-                closeDrawer: () => {
-                    if (!drawerToggle.current) return;
-
-                    drawerToggle.current.checked = false;
-                },
+                openDrawer: openDrawer,
+                closeDrawer: closeDrawer,
             };
         },
         []
     );
+
+    const openDrawer = () => {
+        if (!drawerToggle.current) return;
+
+        drawerToggle.current.checked = true;
+    };
+    const closeDrawer = () => {
+        if (!drawerToggle.current) return;
+
+        drawerToggle.current.checked = false;
+    };
 
     return (
         <div className="drawer">
@@ -48,10 +54,10 @@ const PageWrapper = ({ children, ref }: TPageWrapper) => {
             />
             <div className="drawer-content">
                 {/* Page content here */}
+                <NavBar onMouseMenuClick={openDrawer} />
                 {children}
-                <Modal title="Title" ref={popupModal}>
-                    This isa test
-                </Modal>
+                <Footer />
+                <Modal ref={popupModal} />
             </div>
             <div className="drawer-side">
                 <label
@@ -62,10 +68,10 @@ const PageWrapper = ({ children, ref }: TPageWrapper) => {
                 <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
                     {/* Sidebar content here */}
                     <li>
-                        <a>Sidebar Item 1</a>
+                        <Link href={"/"}>Home</Link>
                     </li>
                     <li>
-                        <a>Sidebar Item 2</a>
+                        <Link href={"/liked"}>Liked</Link>
                     </li>
                 </ul>
             </div>
